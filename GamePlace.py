@@ -17,11 +17,16 @@ screen = pygame.display.set_mode((960, 599), 0, 32)
 font = pygame.font.SysFont(None, 20)
 menufont = pygame.font.SysFont('britannic', 20)
 logoFont = pygame.font.SysFont('britannic', 70)
+animation_set = [pygame.image.load(f"{i}Transition.png") for i in range(1, 11)]
 
-"""
-A function that can be used to write text on our screen and buttons
-"""
 image = pygame.image.load('LitleButton.png')
+But = pygame.image.load('Button.png')
+UlanBG = pygame.image.load('Ulanbator.png')
+UlanBG = pygame.transform.scale(UlanBG, (960, 600))
+DiaScreen = pygame.image.load('Dialog screen.png')
+DiaScreen = pygame.transform.scale(DiaScreen, (960, 600))
+Batiy = pygame.image.load('Char1.png')
+Batiy = pygame.transform.scale(Batiy, (600, 600))
 bg = pygame.image.load("HrenMap.png")
 RealBG = pygame.transform.scale(bg, (960, 600))
 
@@ -40,13 +45,13 @@ click = False
 
 # Main container function that holds the buttons and game functions
 def main_menu():
+    global i
     quit = False
     global click
     while True:
         screen.fill((250, 250, 250))
         screen.blit(RealBG, (0, 0))
         #draw_text('Ersalam', logoFont, (255, 193, 80), screen, 340, 80)
-
 
         mx, my = pygame.mouse.get_pos()
 
@@ -113,6 +118,8 @@ This function is called when the "PLAY" button is clicked.
 """
 
 
+
+
 def game():
     os.system("Game.py")
     pygame.quit()
@@ -122,21 +129,133 @@ def game():
 """
 This function is called when the "OPTIONS" button is clicked.
 """
-
 def UlaanbaatorTown():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bg, (0, 0))
+        screen.blit(UlanBG, (0, 0))
+        draw_text('Типа игра [нажать SPACE зайти в меню]', font, (255, 255, 255), screen, 20, 20)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    UlaanbaatorDialog()
 
-        draw_text('Типа настройки [нажать ESC чтобы вернутся в меню]', font, (255, 255, 255), screen, 20, 20)
+        pygame.display.update()
+        mainClock.tick(60)
+
+def UlaanbaatorDialog():
+    lives = "Hi"
+    global click
+    while True:
+        screen.fill((250, 250, 250))
+        screen.blit(UlanBG, (0, 0))
+        screen.blit(DiaScreen, (0, 0))
+
+        mx, my = pygame.mouse.get_pos()
+
+        # creating buttons
+        button_1 = pygame.Rect(700, 380, 320, 50)
+        button_2 = pygame.Rect(700, 460, 320, 50)
+        #button_3 = pygame.Rect(700, 540, 320, 50)
+        # defining functions when a certain button is pressed
+        if button_1.collidepoint((mx, my)):
+            if click:
+                UlaanbaatorSecondDialog()
+                lives += "Good luck"
+        if button_2.collidepoint((mx, my)):
+            if click:
+                main_menu()
+                lives += "Okey"
+        #if button_3.collidepoint((mx, my)):
+            #if click:
+                #lives += "Goodbye"
+        screen.blit(But, (button_1))
+        screen.blit(But, (button_2))
+        #screen.blit(But, (button_3))
+
+        text = font.render(str(lives), True, (200, 200, 200))
+        screen.blit(text, (600, 100))
+        # pygame.draw.rect(screen, (19, 50, 81), button_1)
+        # pygame.draw.rect(screen, (19, 50, 81), button_2)
+
+        # writing text on top of button
+        draw_text('1. Прогулятся по городу', font, (255, 255, 255), screen, 730, 390)
+        draw_text('2. Покинуть город', font, (255, 255, 255), screen, 730, 470)
+        #draw_text('3.', font, (255, 255, 255), screen, 730, 550)
+
+        click = False
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    running = False
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+def UlaanbaatorSecondDialog():
+    lives = "Вскоре вы встретили мужчины одетого в ватник и малгай." \
+            "*Что ты здесь делаешь республиканец?* недовольно произносит он"
+    global click
+    while True:
+        screen.fill((250, 250, 250))
+        screen.blit(UlanBG, (0, 0))
+        screen.blit(DiaScreen, (0, 0))
+        screen.blit(Batiy, (10, 10))
+
+        mx, my = pygame.mouse.get_pos()
+
+        # creating buttons
+        button_1 = pygame.Rect(700, 380, 320, 50)
+        button_2 = pygame.Rect(700, 460, 320, 50)
+        button_3 = pygame.Rect(700, 540, 320, 50)
+        # defining functions when a certain button is pressed
+        if button_1.collidepoint((mx, my)):
+            if click:
+                pygame.mixer.music.stop()
+                lives += "Не будь так груб я за *Хана*"
+        if button_2.collidepoint((mx, my)):
+            if click:
+                main_menu()
+                lives += "Okey"
+        if button_3.collidepoint((mx, my)):
+            if click:
+                lives += "Goodbye"
+        screen.blit(But, (button_1))
+        screen.blit(But, (button_2))
+        screen.blit(But, (button_3))
+
+        text = font.render(str(lives), True, (200, 200, 200))
+        screen.blit(text, (600, 100))
+        # pygame.draw.rect(screen, (19, 50, 81), button_1)
+        # pygame.draw.rect(screen, (19, 50, 81), button_2)
+
+        # writing text on top of button
+        draw_text('1. Не будь так груб я за *Хана*', font, (255, 255, 255), screen, 730, 390)
+        draw_text('2. Покинуть город', font, (255, 255, 255), screen, 730, 470)
+        draw_text('3.', font, (255, 255, 255), screen, 730, 550)
+
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
 
         pygame.display.update()
         mainClock.tick(60)
