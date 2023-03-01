@@ -6,9 +6,9 @@ class Rook(Piece):
         self.name = 'Rook'
         super(Rook, self).__init__(color, position)
         if self.color == 'w':
-            self.image = 'data/images/white_rook.png'
+            self.image = 'data/images/WhiteTower.png'
         else:
-            self.image = 'data/images/black_rook.png'
+            self.image = 'data/images/BlackTower.png'
 
         self.value = 5
 

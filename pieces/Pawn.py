@@ -6,9 +6,9 @@ class Pawn(Piece):
         self.name = 'Pawn'
         super(Pawn, self).__init__(color, position)
         if self.color == 'w':
-            self.image = 'data/images/white_pawn.png'
+            self.image = 'data/images/WhiteBoltPawn.png'
         else:
-            self.image = 'data/images/black_pawn.png'
+            self.image = 'data/images/BlackBoltPawn.png'
 
         self.value = 1
 
